@@ -1,16 +1,18 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "Cove",
+    "slug": "cove-property-invest",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
-    "userInterfaceStyle": "automatic",
+    "scheme": "cove",
+    "userInterfaceStyle": "light",
     "ios": {
+      "bundleIdentifier": "com.crypco.cove",
       "icon": "./assets/expo.icon"
     },
     "android": {
+      "package": "com.crypco.cove",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -28,7 +30,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#F5F5F0",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }

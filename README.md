@@ -1,56 +1,33 @@
-# Welcome to your Expo app 👋
+# Cove
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Cove is an independent Expo prototype for exploring fractional real-estate investing. It uses fictional property listings and a simulated portfolio; it is not affiliated with any real-estate investment provider and does not provide financial services.
 
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Run the mobile app
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+By default, the app runs in demo mode with sample listings. Property details, saved listings, and simulated contributions are available without an API server. Demo contributions and favorites are saved locally on the device.
 
-### Other setup steps
+## Run with the catalog API
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Start the backend from the `backend` directory (see [backend setup](../backend/README.md)), then set `EXPO_PUBLIC_API_URL` in a local `.env` file:
 
-## Learn more
+```env
+EXPO_PUBLIC_API_URL=http://localhost:5001
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Use an address reachable from the device or emulator when running on hardware. If a configured API is unavailable, the app reports the error rather than silently switching to sample data.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Included screens and flows
 
-## Join the community
+- Property discovery, sample listing details, and a saved-property shortlist
+- Demo amount entry, estimate review, and a simulated portfolio entry
+- Portfolio summary, local activity history, and local demo-data reset
+- Clear disclosures that no funds, orders, ownership, or actual returns are created
 
-Join our community of developers creating universal apps.
+## Production work still required
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+The backend currently exposes only the health check and fictional property catalog. The database schema is a foundation, not a deployed financial service. Before handling real users or money, integrate a trusted identity provider, server-side authorization, KYC/AML and sanctions checks, regulated investment operations and disclosures, payment/custody providers, auditable ledger and reconciliation, monitoring, and jurisdiction-specific legal review. Do not treat the local demo portfolio as a source of truth.
