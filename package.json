@@ -2,6 +2,7 @@
   "name": "mobile",
   "version": "1.0.0",
   "main": "expo-router/entry",
+  "type": "module",
   "dependencies": {
     "@expo/ui": "~58.0.25",
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -35,7 +36,8 @@
     "typescript": "~6.0.3"
   },
   "scripts": {
-    "start": "expo start",
+     "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
