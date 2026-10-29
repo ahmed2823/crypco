@@ -1,73 +1,36 @@
-import express from "express";
 import "dotenv/config";
+import cors from "cors";
+import express from "express";
+import { demoProperties } from "./data/properties.js";
 import { ENV } from "./config/env.js";
-import { db } from "./config/db.js";
-import { and, eq } from "drizzle-orm";
-import { favoritesTable } from "./db/schema.js";
 
 const app = express();
 const PORT = ENV.PORT || 5001;
-app.use(express.json());
 
-app.get("/api/health", (req, res) => {
-  res.status(200).json({ message: "Server is healthy" });
+app.use(cors());
+app.use(express.json({ limit: "32kb" }));
+
+app.get("/api/health", (_req, res) => {
+  res.status(200).json({ status: "ok", service: "cove-property-api" });
 });
 
-app.post("/api/favorites", async (req, res) => {
-    try {
- const { userId, recipeId, title, image, cookTime, servings } = req.body; 
+app.get("/api/properties", (_req, res) => {
+  res.status(200).json(demoProperties);
+});
 
-    if (!userId || !recipeId || !title) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-    const newFavorite = await db.insert(favoritesTable).values({
-      userId,
-      recipeId,
-      title,
-      image,
-      cookTime,
-      servings
-    }).returning();
-    res.status(201).json(newFavorite[0]);
-  } catch (error) {
-console.error("Error adding favorite recipe:", error);
-    res.status(500).json({ message: "Error adding favorite recipe" });
+app.get("/api/properties/:id", (req, res) => {
+  const property = demoProperties.find((item) => item.id === req.params.id);
+  if (!property) {
+    return res.status(404).json({ error: "Property not found" });
   }
+  return res.status(200).json(property);
 });
 
-app.get("/api/favorites/:userId", async (req, res) => {
-  try {
-    const { userId } = req.params;
-
-    const userFavorites = await db
-      .select()
-      .from(favoritesTable)
-      .where(eq(favoritesTable.userId, userId));
-
-    res.status(200).json(userFavorites);
-  } catch (error) {
-    console.log("Error fetching the favorites", error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
+app.use((error, _req, res, _next) => {
+  console.error("Unhandled API error:", error);
+  res.status(500).json({ error: "An unexpected server error occurred." });
 });
 
-app.delete("/api/favorites/:userId/:recipeId", async (req, res) => {
-  try {
-    const { userId, recipeId } = req.params;
-
-    await db
-      .delete(favoritesTable)
-      .where(
-        and(eq(favoritesTable.userId, userId), eq(favoritesTable.recipeId, parseInt(recipeId)))
-      );
-
-    res.status(200).json({ message: "Favorite removed successfully" });
-  } catch (error) {
-    console.log("Error removing a favorite", error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-});
-
-app.listen (PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Property API listening on port ${PORT}`);
 });
